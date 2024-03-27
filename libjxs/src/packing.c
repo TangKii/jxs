@@ -890,7 +890,7 @@ int unpack_precinct(unpacking_context_t* ctx, bit_unpacker_t* bitstream, precinc
 		subpkt_len = (int)bitunpacker_consumed_bits(bitstream) - len_before_subpkt;
 		if (subpkt_len != (info->gcli_len[subpkt] << 3))
 		{
-			//fprintf(stderr, "Error: (GCLI) corruption detected - unpacked=%d , expected=%d\n", subpkt_len, info->gcli_len[subpkt] << 3);
+			fprintf(stderr, "Error: (GCLI) corruption detected - unpacked=%d , expected=%d\n", subpkt_len, info->gcli_len[subpkt] << 3);
 			return -1;
 		}
 
@@ -916,7 +916,7 @@ int unpack_precinct(unpacking_context_t* ctx, bit_unpacker_t* bitstream, precinc
 		subpkt_len = (int)bitunpacker_consumed_bits(bitstream) - len_before_subpkt;
 		if (subpkt_len != (info->data_len[subpkt] << 3))
 		{
-			//fprintf(stderr, "Error: (DATA) corruption detected - unpacked=%d , expected=%d\n", subpkt_len, info->data_len[subpkt] << 3);
+			fprintf(stderr, "Error: (DATA) corruption detected - unpacked=%d , expected=%d\n", subpkt_len, info->data_len[subpkt] << 3);
 			return -1;
 		}
 
@@ -941,7 +941,7 @@ int unpack_precinct(unpacking_context_t* ctx, bit_unpacker_t* bitstream, precinc
 			subpkt_len = (int)bitunpacker_consumed_bits(bitstream) - len_before_subpkt;
 			if (subpkt_len != (info->sign_len[subpkt] << 3))
 			{
-				//fprintf(stderr, "Error: (SIGN) corruption detected - unpacked=%d , expected=%d\n", subpkt_len, info->sign_len[subpkt] << 3);
+				fprintf(stderr, "Error: (SIGN) corruption detected - unpacked=%d , expected=%d\n", subpkt_len, info->sign_len[subpkt] << 3);
 				return -1;
 			}
 		}

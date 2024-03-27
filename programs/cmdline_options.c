@@ -62,17 +62,17 @@
 
 #include "cmdline_options.h"
 
-// #ifndef _MSC_VER
-// static inline int strcat_s(char* restrict dest, size_t destsz, const char* restrict src)
-// {
-// 	if (dest == 0 || src == 0)
-// 	{
-// 		return -1;
-// 	}
-// 	strcat(dest, src);
-// 	return 0;
-// }
-// #endif
+#ifndef _MSC_VER
+static inline int strcat_s(char* restrict dest, size_t destsz, const char* restrict src)
+{
+	if (dest == 0 || src == 0)
+	{
+		return -1;
+	}
+	strcat(dest, src);
+	return 0;
+}
+#endif
 
 const char* active_options[] = {
 	  "c:Dw:h:d:f:n:v",
