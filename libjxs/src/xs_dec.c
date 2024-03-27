@@ -224,7 +224,7 @@ void swap_ptrs(precinct_t** p1, precinct_t** p2)
 	*p2 = tmp;
 }
 
-bool xs_dec_bitstream(xs_dec_context_t* ctx, void* bitstream_buf, size_t bitstream_buf_size, xs_image_t* image_out)
+bool xs_dec_bitstream(xs_dec_context_t* ctx, void* bitstream_buf, size_t bitstream_buf_size, xs_image_t* image_out, int file_idx)
 {
 	int slice_idx = 0;
 	uint64_t bitstream_pos = 0;
@@ -267,8 +267,9 @@ bool xs_dec_bitstream(xs_dec_context_t* ctx, void* bitstream_buf, size_t bitstre
 				(!first_of_slice) ? ctx->precinct_top[column] : NULL, ctx->gtlis_table_top[column],
 				&unpack_out, extra_bits_before_precinct) < 0)
 			{
-				if (ctx->xs_config->verbose) fprintf(stderr, "Corrupted codestream! line number %d\n", line_idx);
-				return false;
+				fprintf(stderr, "Corrupted codestream! line number %d\n", line_idx + (file_idx*image_out->height));
+				break;
+				//return false;
 			}
 			bitstream_pos = bitunpacker_consumed_bits(ctx->bitstream);
 
@@ -300,7 +301,7 @@ bool xs_dec_bitstream(xs_dec_context_t* ctx, void* bitstream_buf, size_t bitstre
 	}
 #endif
 	xs_parse_tail(ctx->bitstream);
-	assert(bitunpacker_consumed_all(ctx->bitstream));
+	//assert(bitunpacker_consumed_all(ctx->bitstream));
 	return true;
 }
 

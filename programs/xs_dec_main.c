@@ -87,7 +87,7 @@ int main(int argc, char **argv)
 	int optind;
 	FILE* fragment_csv_fh = NULL;
 
-	fprintf(stderr, "JPEG XS test model (XSM) version %s\n", xs_get_version_str());
+	//fprintf(stderr, "JPEG XS test model (XSM) version %s\n", xs_get_version_str());
 
 	do
 	{
@@ -137,7 +137,9 @@ int main(int argc, char **argv)
 			ret = -1;
 			break;
 		}
+
 		fileio_read(input_fn, bitstream_buf, &bitstream_buf_size, bitstream_buf_max_size);
+
 
 		if (!xs_dec_probe(bitstream_buf, bitstream_buf_size, &xs_config, &image))
 		{
@@ -221,7 +223,7 @@ int main(int argc, char **argv)
 
 		do
 		{
-			if (!xs_dec_bitstream(ctx, bitstream_buf, bitstream_buf_max_size, &image))
+			if (!xs_dec_bitstream(ctx, bitstream_buf, bitstream_buf_max_size, &image, file_idx))
 			{
 				fprintf(stderr, "Error while decoding the codestream\n");
 				ret = -1;
@@ -237,7 +239,7 @@ int main(int argc, char **argv)
 			sequence_get_filepath(output_seq_n, output_fn, file_idx + options.sequence_first);
 			if (is_sequence_path(input_seq_n) || is_sequence_path(output_seq_n))
 			{
-				fprintf(stderr, "writing %s\n", output_fn);
+				//fprintf(stderr, "writing %s\n", output_fn);
 			}
 
 			if (image_save_auto(output_fn, &image) < 0)

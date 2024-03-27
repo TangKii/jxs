@@ -305,7 +305,7 @@ JXS_SHARED_LIB_API bool xs_dec_probe(uint8_t* bitstream_buf, size_t codestream_s
 JXS_SHARED_LIB_API xs_dec_context_t* xs_dec_init(xs_config_t* xs_config, xs_image_t* image);
 JXS_SHARED_LIB_API bool xs_dec_set_fragment_info_cb(xs_dec_context_t* ctx, xs_fragment_info_cb_t ficb, void* fictx);
 JXS_SHARED_LIB_API void xs_dec_close(xs_dec_context_t* ctx);
-JXS_SHARED_LIB_API bool xs_dec_bitstream(xs_dec_context_t* ctx, void* bitstream_buf, size_t bitstream_buf_byte_size, xs_image_t* image_out);
+JXS_SHARED_LIB_API bool xs_dec_bitstream(xs_dec_context_t* ctx, void* bitstream_buf, size_t bitstream_buf_byte_size, xs_image_t* image_out, int file_idx);
 JXS_SHARED_LIB_API bool xs_dec_postprocess_image(const xs_config_t* xs_config, xs_image_t* image_out);
 
 JXS_SHARED_LIB_API bool xs_config_parse_and_init(xs_config_t* cfg, const xs_image_t* im, const char* config_str, const size_t config_str_max_len);
