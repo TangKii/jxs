@@ -252,7 +252,7 @@ bool xs_dec_bitstream(xs_dec_context_t* ctx, void* bitstream_buf, size_t bitstre
 				int slice_idx_check;
 				xs_parse_slice_header(ctx->bitstream, &slice_idx_check);
 				assert(slice_idx_check == (slice_idx++));
-				if (ctx->xs_config->verbose > 1)
+				if (ctx->xs_config->verbose > 2)
 				{
 					fprintf(stderr, "Read Slice Header (slice_idx=%d)\n", slice_idx_check);
 				}

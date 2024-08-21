@@ -697,8 +697,8 @@ bool xs_config_validate(const xs_config_t* cfg, const xs_image_t* im)
 
 	if (cfg->profile != XS_PROFILE_UNRESTRICTED && cfg->p.slice_height != 16)
 	{
-		if (cfg->verbose) fprintf(stderr, "Error: Slice height must be 16 lines high\n");
-		return false;
+		//if (cfg->verbose) fprintf(stderr, "Error: Slice height must be 16 lines high\n");
+		//return false;
 	}
 
 	switch (cfg->p.color_transform)

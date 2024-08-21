@@ -223,6 +223,30 @@ int main(int argc, char **argv)
 
 		do
 		{
+			if(image.comps_array[0] == NULL)
+			{
+				if (!xs_dec_probe(bitstream_buf, bitstream_buf_size, &xs_config, &image))
+				{
+					fprintf(stderr, "Unable to parse input codestream (%s)\n", input_fn);
+					ret = -1;
+					break;
+				}
+				if (!xs_allocate_image(&image, false))
+				{
+					fprintf(stderr, "Image memory allocation error\n");
+					ret = -1;
+					break;
+				}
+
+				xs_config.verbose = options.verbose;
+				ctx = xs_dec_init(&xs_config, &image);
+				if (!ctx)
+				{
+					fprintf(stderr, "Error parsing the codestream\n");
+					ret = -1;
+					break;
+				}
+			}
 			if (!xs_dec_bitstream(ctx, bitstream_buf, bitstream_buf_max_size, &image, file_idx))
 			{
 				fprintf(stderr, "Error while decoding the codestream\n");
@@ -252,6 +276,9 @@ int main(int argc, char **argv)
 			{
 				break;
 			}
+
+			memset(&xs_config, 0, sizeof(xs_config));
+			memset(&image, 0, sizeof(image));
 
 			file_idx++;
 			sequence_get_filepath(input_seq_n, input_fn, file_idx + options.sequence_first);

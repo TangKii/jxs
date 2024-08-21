@@ -115,7 +115,7 @@ int xs_write_picture_header(bit_packer_t* bitstream, xs_image_t* im, const xs_co
 		assert(cfg->bitstream_size_in_bytes != 0 && cfg->bitstream_size_in_bytes != (size_t)-1);
 		nbits += bitpacker_write(bitstream, cfg->bitstream_size_in_bytes, 32);
 	}
-	nbits += bitpacker_write(bitstream, cfg->profile, 16);  // Ppih
+	nbits += bitpacker_write(bitstream, 0, 16);  // Ppih
 	nbits += bitpacker_write(bitstream, (((uint16_t)cfg->level) << 8) | ((uint16_t)cfg->sublevel), 16);  // Plev
 	nbits += bitpacker_write(bitstream, im->width, 16);
 	nbits += bitpacker_write(bitstream, im->height, 16);
@@ -159,28 +159,53 @@ bool xs_parse_picture_header(bit_unpacker_t* bitstream, xs_image_t* im, xs_confi
 	// Lcod
 	bitunpacker_read(bitstream, &val, 32);
 	cfg->bitstream_size_in_bytes = (uint32_t)val;
+	if (cfg->verbose > 2)
+	{
+		printf("bitstream_size_in_bytes=%d\n", cfg->bitstream_size_in_bytes);
+	}
 
 	// Ppih
 	bitunpacker_read(bitstream, &val, 16);
 	cfg->profile = (xs_profile_t)val;
-
+	if (cfg->verbose > 2)
+	{
+		printf("profile=%d\n", cfg->profile);
+	}
 	// Plev
 	bitunpacker_read(bitstream, &val, 16);
 	cfg->level = (xs_level_t)((val >> 8) & 0xff);
 	cfg->sublevel = (xs_level_t)(val & 0xff);
+	if (cfg->verbose > 2)
+	{
+		printf("level=%d\n", cfg->level);
+		printf("sublevel=%d\n", cfg->sublevel);
+	}
 
 	bitunpacker_read(bitstream, &val, 16);
 	im->width = (uint16_t)val;
 	bitunpacker_read(bitstream, &val, 16);
 	im->height = (uint16_t)val;
+	if (cfg->verbose > 2)
+	{
+		printf("width=%d\n", im->width);
+		printf("height=%d\n", im->height);
+	}
 
 	// Cw
 	bitunpacker_read(bitstream, &val, 16);
 	cfg->p.Cw = (uint16_t)val;
+	if (cfg->verbose > 2)
+	{
+		printf("Cw=%d\n", cfg->p.Cw);
+	}
 
 	// H_sl
 	bitunpacker_read(bitstream, &val, 16);
 	cfg->p.slice_height = (uint16_t)val;
+	if (cfg->verbose > 2)
+	{
+		printf("slice_height=%d\n", cfg->p.slice_height);
+	}
 
 	bitunpacker_read(bitstream, &val, 8);
 	im->ncomps = (uint8_t)val;
@@ -188,18 +213,32 @@ bool xs_parse_picture_header(bit_unpacker_t* bitstream, xs_image_t* im, xs_confi
 	{
 		return false;
 	}
+	if (cfg->verbose > 2)
+	{
+		printf("ncomps=%d\n", im->ncomps);
+	}
 
 	// N_g and S_s
 	bitunpacker_read(bitstream, &val, 8);
 	cfg->p.N_g = (uint8_t)val;
 	bitunpacker_read(bitstream, &val, 8);
 	cfg->p.S_s = (uint8_t)val;
+	if (cfg->verbose > 2)
+	{
+		printf("N_g=%d\n", cfg->p.N_g);
+		printf("S_s=%d\n", cfg->p.S_s);
+	}
 
 	// Bw and Fq
 	bitunpacker_read(bitstream, &val, 8);
 	cfg->p.Bw = (uint8_t)val;
 	bitunpacker_read(bitstream, &val, 4);
 	cfg->p.Fq = (uint8_t)val;
+	if (cfg->verbose > 2)
+	{
+		printf("Bw=%d\n", cfg->p.Bw);
+		printf("Fq=%d\n", cfg->p.Fq);
+	}
 
 	// B_r, Fslc, and Ppoc
 	bitunpacker_read(bitstream, &val, 4);
@@ -208,10 +247,20 @@ bool xs_parse_picture_header(bit_unpacker_t* bitstream, xs_image_t* im, xs_confi
 	cfg->p.Fslc = (uint8_t)val;
 	bitunpacker_read(bitstream, &val, 3);
 	cfg->p.Ppoc = (uint8_t)val;
+	if (cfg->verbose > 2)
+	{
+		printf("B_r=%d\n", cfg->p.B_r);
+		printf("Fslc=%d\n", cfg->p.Fslc);
+		printf("Ppoc=%d\n", cfg->p.Ppoc);
+	}
 
 	// Cpih
 	bitunpacker_read(bitstream, &val, 4);
 	cfg->p.color_transform = (xs_cpih_t)val;
+	if (cfg->verbose > 2)
+	{
+		printf("bitstream_size_in_bytes=%d\n", cfg->p.color_transform);
+	}
 
 	// NLx and NLy
 	bitunpacker_read(bitstream, &val, 4);
@@ -219,22 +268,42 @@ bool xs_parse_picture_header(bit_unpacker_t* bitstream, xs_image_t* im, xs_confi
 	bitunpacker_read(bitstream, &val, 4);
 	cfg->p.NLy = (uint8_t)val;
 	cfg->p.slice_height *= (1 << cfg->p.NLy);
+	if (cfg->verbose > 2)
+	{
+		printf("NLx=%d\n", cfg->p.NLx);
+		printf("NLy=%d\n", cfg->p.NLy);
+		printf("slice_height=%d\n", cfg->p.slice_height);
+	}
 
 	// Lh and Rl
 	bitunpacker_read(bitstream, &val, 1);
 	cfg->p.Lh = (uint8_t)val;
 	bitunpacker_read(bitstream, &val, 1);
 	cfg->p.Rl = (uint8_t)val;
+	if (cfg->verbose > 2)
+	{
+		printf("Lh=%d\n", cfg->p.Lh);
+		printf("Rl=%d\n", cfg->p.Rl);
+	}
 
 	// Qpih
 	bitunpacker_read(bitstream, &val, 2);
 	cfg->p.Qpih = (uint8_t)val;
+	if (cfg->verbose > 2)
+	{
+		printf("Qpih=%d\n",cfg->p.Qpih);
+	}
 
 	// Fs and Rm
 	bitunpacker_read(bitstream, &val, 2);
 	cfg->p.Fs = (uint8_t)val;
 	bitunpacker_read(bitstream, &val, 2);
 	cfg->p.Rm = (uint8_t)val;
+	if (cfg->verbose > 2)
+	{
+		printf("Fs=%d\n", cfg->p.Fs);
+		printf("Rm=%d\n", cfg->p.Rm);
+	}
 
 	return true;
 }
@@ -766,7 +835,7 @@ int xs_write_head(bit_packer_t* bitstream, xs_image_t* im, const xs_config_t* cf
 	nbits += xs_write_cwd_marker(bitstream, cfg);
 	nbits += xs_write_cts_marker(bitstream, cfg);
 	nbits += xs_write_crg_marker(bitstream, im, cfg);
-	nbits += xs_write_com_encoder_identification(bitstream);
+	//nbits += xs_write_com_encoder_identification(bitstream);
 	return nbits;
 }
 

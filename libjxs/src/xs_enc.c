@@ -260,7 +260,7 @@ bool xs_enc_image(xs_enc_context_t* ctx, xs_image_t* image, void* codestream_buf
 
 			if (precinct_is_first_of_slice(ctx->precinct[column], ctx->xs_config->p.slice_height) && (column == 0))
 			{
-				if (ctx->xs_config->verbose > 1)
+				if (ctx->xs_config->verbose > 2)
 				{
 					fprintf(stderr, "Write Slice Header (slice_idx=%d)\n", slice_idx);
 				}
