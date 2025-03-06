@@ -88,6 +88,12 @@ int yuv_planar_decode(const char* filename, xs_image_t* im_out)
 	bytesRead = fread(data, sizeof(uint8_t), nsamples444*sizeof(uint16_t), f_in);
 	leftover = fread(data, sizeof(uint8_t), 1, f_in);
 
+	/*if image depth not set, yuv420p word_size=16 format conflict with yuv444p word_size=8 format*/
+	if((bytesRead==nsamples444) && (im_out->depth == -1))
+	{
+		fprintf(stderr, "yuv_planar_decode error: please set image component depth value with -d\n");
+		return -1;
+	}
 	if (leftover || ((bytesRead != nsamples420) &&
 					 (bytesRead != nsamples422) &&
 					 (bytesRead != nsamples444) &&
@@ -108,7 +114,7 @@ int yuv_planar_decode(const char* filename, xs_image_t* im_out)
 	}
 	fclose(f_in);
 	im_out->ncomps = 3;
-	if (bytesRead==nsamples420 || bytesRead==nsamples420*2)
+	if (bytesRead==nsamples420 || ((bytesRead==nsamples420*2)&&(im_out->depth > 8)))
 	{
 		im_out->sx[0] = 1;
 		im_out->sx[2] = im_out->sx[1] = 2;
