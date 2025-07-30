@@ -1,4 +1,4 @@
-# JPEG XS Reference Software - 2nd Edition
+# [JPEG XS Reference Software - 2nd Edition](https://jpeg.org/jpegxs/software.html)
 
 ## License and copyright
 
