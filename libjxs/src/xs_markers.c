@@ -115,7 +115,7 @@ int xs_write_picture_header(bit_packer_t* bitstream, xs_image_t* im, const xs_co
 		assert(cfg->bitstream_size_in_bytes != 0 && cfg->bitstream_size_in_bytes != (size_t)-1);
 		nbits += bitpacker_write(bitstream, cfg->bitstream_size_in_bytes, 32);
 	}
-	nbits += bitpacker_write(bitstream, 0, 16);  // Ppih
+	nbits += bitpacker_write(bitstream, cfg->profile, 16);  // Ppih
 	nbits += bitpacker_write(bitstream, (((uint16_t)cfg->level) << 8) | ((uint16_t)cfg->sublevel), 16);  // Plev
 	nbits += bitpacker_write(bitstream, im->width, 16);
 	nbits += bitpacker_write(bitstream, im->height, 16);
